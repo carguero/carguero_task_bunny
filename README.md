@@ -1,11 +1,6 @@
 # TaskBunny
 
-[![Hex.pm](https://img.shields.io/hexpm/v/task_bunny.svg "Hex")](https://hex.pm/packages/task_bunny)
-[![Build Status](https://travis-ci.org/shinyscorpion/task_bunny.svg?branch=master)](https://travis-ci.org/shinyscorpion/task_bunny)
-[![Inline docs](http://inch-ci.org/github/shinyscorpion/task_bunny.svg?branch=master)](http://inch-ci.org/github/shinyscorpion/task_bunny)
-[![Deps Status](https://beta.hexfaktor.org/badge/all/github/shinyscorpion/task_bunny.svg)](https://beta.hexfaktor.org/github/shinyscorpion/task_bunny)
-[![Hex.pm](https://img.shields.io/hexpm/l/task_bunny.svg "License")](LICENSE.md)
-
+This is Carguero's internal version of TaskBunny.
 TaskBunny is a background processing application written in Elixir and uses RabbitMQ as a messaging backend.
 
 [API Reference](https://hexdocs.pm/task_bunny/)
@@ -509,10 +504,3 @@ The following plugins will help you use RabbitMQ with TaskBunny.
 TaskBunny automatically integrates with [Wobserver](https://github.com/shinyscorpion/wobserver).
 All worker and connection information will be added as a page on the web interface.
 The current amount of job runners and job success, failure, and reject totals are added to the `/metrics` endpoint.
-
-
-## Copyright and License
-
-Copyright (c) 2017, SQUARE ENIX LTD.
-
-TaskBunny code is licensed under the [MIT License](LICENSE.md).
