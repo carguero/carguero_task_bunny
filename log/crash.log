@@ -1,0 +1,17 @@
+2020-11-25 11:59:07 =CRASH REPORT====
+  crasher:
+    initial call: application_master:init/4
+    pid: <0.3913.0>
+    registered_name: []
+    exception exit: {{bad_return,{{'Elixir.Credo',start,[normal,[]]},{'EXIT',{undef,[{'Elixir.Credo',start,[normal,[]],[]},{application_master,start_it_old,4,[{file,"application_master.erl"},{line,277}]}]}}}},[{application_master,init,4,[{file,"application_master.erl"},{line,138}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+    ancestors: [<0.3912.0>]
+    message_queue_len: 1
+    messages: [{'EXIT',<0.3914.0>,normal}]
+    links: [<0.3912.0>,<0.44.0>]
+    dictionary: []
+    trap_exit: true
+    status: running
+    heap_size: 610
+    stack_size: 28
+    reductions: 206
+  neighbours:
