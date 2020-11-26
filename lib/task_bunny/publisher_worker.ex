@@ -27,10 +27,12 @@ defmodule TaskBunny.PublisherWorker do
   @spec handle_call({:publish, atom, String.t(), String.t(), String.t(), list}, any, map) ::
           {:reply, :ok, map}
   def handle_call({:publish, host, exchange, routing_key, message, options}, _from, state) do
-    with {:ok, channel, new_state} <- get_channel(host, state) do
-      {:reply, AMQP.Basic.publish(channel, exchange, routing_key, message, options), new_state}
-    else
-      error -> {:reply, error, state}
+    case get_channel(host, state) do
+      {:ok, channel, new_state} ->
+        {:reply, AMQP.Basic.publish(channel, exchange, routing_key, message, options), new_state}
+
+      error ->
+        {:reply, error, state}
     end
   end
 
@@ -39,8 +41,16 @@ defmodule TaskBunny.PublisherWorker do
   """
   @spec terminate(any, map) :: :ok
   def terminate(_, state) do
-    state |> Map.values() |> Enum.each(&AMQP.Channel.close/1)
+    state |> Map.values() |> Enum.each(&close_channel/1)
   end
+
+  @spec close_channel(AMQP.Channel.t() | nil) ::
+          false | :ok | {:error, {:error, :blocked | :closing}}
+  def close_channel(%AMQP.Channel{pid: pid} = channel) do
+    Process.alive?(pid) && AMQP.Channel.close(channel)
+  end
+
+  def close_channel(_), do: :ok
 
   defp get_channel(host, state) do
     if channel = state[host] do

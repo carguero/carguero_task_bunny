@@ -73,7 +73,7 @@ defmodule TaskBunny.Job do
   @doc """
   Callback to process a job.
 
-  It can take any type of argument as long as it can be serialized with Poison,
+  It can take any type of argument as long as it can be serialized with Jason,
   but we recommend you to use map with string keys for a consistency.
 
       def perform(name) do
@@ -85,7 +85,7 @@ defmodule TaskBunny.Job do
       end
 
   """
-  @callback perform(any) :: :ok | {:ok, any} | {:error, term}
+  @callback perform(any) :: :ok | {:ok, any} | {:error, term} | {:reject, any} | :reject
 
   @doc """
   Callback executed when a process gets rejected.

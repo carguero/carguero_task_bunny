@@ -95,12 +95,18 @@ defmodule TaskBunny.Worker do
   def terminate(_reason, state) do
     Logger.info(log_msg("terminating", state))
 
-    if state.channel do
-      AMQP.Channel.close(state.channel)
-    end
+    close_channel(state.channel)
 
     :normal
   end
+
+  @spec close_channel(AMQP.Channel.t() | nil) ::
+          false | :ok | {:error, {:error, :blocked | :closing}}
+  def close_channel(%AMQP.Channel{pid: pid} = channel) do
+    Process.alive?(pid) && AMQP.Channel.close(channel)
+  end
+
+  def close_channel(_), do: :ok
 
   @doc """
   Stops consuming messages from queue.

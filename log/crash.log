@@ -15,3 +15,26 @@
     stack_size: 28
     reductions: 206
   neighbours:
+2020-11-25 14:57:03 =SUPERVISOR REPORT====
+     Supervisor: {local,'Elixir.TaskBunny.Supervisor'}
+     Context:    start_error
+     Reason:     {'EXIT',{#{'__exception__' => true,'__struct__' => 'Elixir.ArgumentError',message => <<"expected :name option to be one of the following:\n\n  * nil\n  * atom\n  * {:global, term}\n  * {:via, module, term}\n\nGot: []\n">>},[{'Elixir.Supervisor',start_link,3,[{file,"lib/supervisor.ex"},{line,782}]},{supervisor,do_start_child_i,3,[{file,"supervisor.erl"},{line,385}]},{supervisor,do_start_child,2,[{file,"supervisor.erl"},{line,371}]},{supervisor,'-start_children/2-fun-0-',3,[{file,"supervisor.erl"},{line,355}]},{supervisor,children_map,4,[{file,"supervisor.erl"},{line,1171}]},{supervisor,init_children,2,[{file,"supervisor.erl"},{line,321}]},{gen_server,init_it,2,[{file,"gen_server.erl"},{line,417}]},{gen_server,init_it,6,[{file,"gen_server.erl"},{line,385}]}]}}
+     Offender:   [{pid,undefined},{id,'Elixir.TaskBunny.Supervisor'},{mfargs,{'Elixir.TaskBunny.Supervisor',start_link,[[]]}},{restart_type,permanent},{shutdown,infinity},{child_type,supervisor}]
+
+2020-11-25 14:57:03 =CRASH REPORT====
+  crasher:
+    initial call: application_master:init/4
+    pid: <0.310.0>
+    registered_name: []
+    exception exit: {{{shutdown,{failed_to_start_child,'Elixir.TaskBunny.Supervisor',{'EXIT',{#{'__exception__' => true,'__struct__' => 'Elixir.ArgumentError',message => <<"expected :name option to be one of the following:\n\n  * nil\n  * atom\n  * {:global, term}\n  * {:via, module, term}\n\nGot: []\n">>},[{'Elixir.Supervisor',start_link,3,[{file,"lib/supervisor.ex"},{line,782}]},{supervisor,do_start_child_i,3,[{file,"supervisor.erl"},{line,385}]},{supervisor,do_start_child,2,[{file,"supervisor.erl"},{line,371}]},{supervisor,'-start_children/2-fun-0-',3,[{file,"supervisor.erl"},{line,355}]},{supervisor,children_map,4,[{file,"supervisor.erl"},{line,1171}]},{supervisor,init_children,2,[{file,"supervisor.erl"},{line,321}]},{gen_server,init_it,2,[{file,"gen_server.erl"},{line,417}]},{gen_server,init_it,6,[{file,"gen_server.erl"},{line,385}]}]}}}},{'Elixir.TaskBunny',start,[normal,[]]}},[{application_master,init,4,[{file,"application_master.erl"},{line,138}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+    ancestors: [<0.309.0>]
+    message_queue_len: 1
+    messages: [{'EXIT',<0.311.0>,normal}]
+    links: [<0.309.0>,<0.44.0>]
+    dictionary: []
+    trap_exit: true
+    status: running
+    heap_size: 987
+    stack_size: 28
+    reductions: 238
+  neighbours:
