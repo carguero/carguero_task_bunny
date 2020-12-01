@@ -47,7 +47,7 @@ defmodule TaskBunny.MessageTest do
         error_type: :return_value,
         return_value: {:error, :test_error},
         failed_count: 0,
-        stacktrace: System.stacktrace(),
+        stacktrace: Process.info(self(), :current_stacktrace),
         raw_body: "abcdefg"
       }
 
