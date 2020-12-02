@@ -1,12 +1,12 @@
 defmodule TaskBunny.Mixfile do
   use Mix.Project
 
-  @version "0.3.4"
+  @version "0.0.1"
   @description "Background processing application/library written in Elixir that uses RabbitMQ as a messaging backend"
 
   def project do
     [
-      app: :task_bunny,
+      app: :carguero_task_bunny,
       version: @version,
       elixir: "~> 1.7.4",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -26,7 +26,7 @@ defmodule TaskBunny.Mixfile do
         extras: ["README.md"],
         main: "readme",
         source_ref: "v#{@version}",
-        source_url: "https://github.com/shinyscorpion/task_bunny"
+        source_url: "https://github.com/carguero/carguero_task_bunny"
       ],
       description: @description,
       package: package(),
@@ -56,10 +56,11 @@ defmodule TaskBunny.Mixfile do
         "Kenneth Lee",
         "Maria Calderon",
         "Ricardo Perez",
-        "Tatsuya Ono"
+        "Tatsuya Ono",
+        "CARGUERO team"
       ],
       licenses: ["MIT"],
-      links: %{"Github" => "https://github.com/shinyscorpion/task_bunny"}
+      links: %{"Github" => "https://github.com/carguero/carguero_task_bunny"}
     ]
   end
 
