@@ -13,7 +13,7 @@ defmodule TaskBunny.Mixfile do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      name: "TaskBunny",
+      name: "CargueroTaskBunny",
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -36,7 +36,7 @@ defmodule TaskBunny.Mixfile do
 
   defp package do
     [
-      name: :task_bunny,
+      name: :carguero_task_bunny,
       files: [
         # Project files
         "mix.exs",
