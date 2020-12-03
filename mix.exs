@@ -1,4 +1,4 @@
-defmodule TaskBunny.Mixfile do
+defmodule CargueroTaskBunny.Mixfile do
   use Mix.Project
 
   @version "0.0.3"
@@ -13,7 +13,7 @@ defmodule TaskBunny.Mixfile do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      name: "CargueroTaskBunny",
+      name: "CargueroCargueroTaskBunny",
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -26,7 +26,7 @@ defmodule TaskBunny.Mixfile do
         extras: ["README.md"],
         main: "readme",
         source_ref: "v#{@version}",
-        source_url: "https://github.com/carguero/carguero_task_bunny"
+        source_url: "https://github.com/carguero/carguero_carguero_task_bunny"
       ],
       description: @description,
       package: package(),
@@ -42,11 +42,11 @@ defmodule TaskBunny.Mixfile do
         "mix.exs",
         "README.md",
         "LICENSE.md",
-        # TaskBunny
-        "lib/task_bunny.ex",
-        "lib/task_bunny",
+        # CargueroTaskBunny
+        "lib/carguero_task_bunny.ex",
+        "lib/carguero_task_bunny",
         # Tasks
-        "lib/mix/tasks/task_bunny.queue.reset.ex"
+        "lib/mix/tasks/carguero_task_bunny.queue.reset.ex"
       ],
       maintainers: [
         "Antonio Sagliocco",
@@ -60,14 +60,14 @@ defmodule TaskBunny.Mixfile do
         "CARGUERO team"
       ],
       licenses: ["MIT"],
-      links: %{"Github" => "https://github.com/carguero/carguero_task_bunny"}
+      links: %{"Github" => "https://github.com/carguero/carguero_carguero_task_bunny"}
     ]
   end
 
   def application do
     [
       extra_applications: [:lager, :logger, :amqp],
-      mod: {TaskBunny, []}
+      mod: {CargueroTaskBunny, []}
     ]
   end
 

@@ -1,40 +1,87 @@
-2020-11-25 11:59:07 =CRASH REPORT====
+2020-12-03 10:20:17 =ERROR REPORT====
+** Generic server 'CargueroTaskBunny.Connection.foo' terminating 
+** Last message in was {'DOWN',#Ref<0.81723563.68157450.79084>,process,<0.2044.0>,{shutdown,normal}}
+** When Server state == {foo,nil,[]}
+** Reason for termination ==
+** {connection_lost,{shutdown,normal}}
+2020-12-03 10:20:17 =CRASH REPORT====
   crasher:
-    initial call: application_master:init/4
-    pid: <0.3913.0>
-    registered_name: []
-    exception exit: {{bad_return,{{'Elixir.Credo',start,[normal,[]]},{'EXIT',{undef,[{'Elixir.Credo',start,[normal,[]],[]},{application_master,start_it_old,4,[{file,"application_master.erl"},{line,277}]}]}}}},[{application_master,init,4,[{file,"application_master.erl"},{line,138}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
-    ancestors: [<0.3912.0>]
-    message_queue_len: 1
-    messages: [{'EXIT',<0.3914.0>,normal}]
-    links: [<0.3912.0>,<0.44.0>]
-    dictionary: []
+    initial call: Elixir.CargueroTaskBunny.Connection:init/1
+    pid: <0.2041.0>
+    registered_name: 'CargueroTaskBunny.Connection.foo'
+    exception exit: {{connection_lost,{shutdown,normal}},[{gen_server,handle_common_reply,8,[{file,"gen_server.erl"},{line,796}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+    ancestors: [<0.2035.0>]
+    message_queue_len: 0
+    messages: []
+    links: []
+    dictionary: [{gen_server_call_timeout,60000}]
+    trap_exit: false
+    status: running
+    heap_size: 1598
+    stack_size: 28
+    reductions: 2840
+  neighbours:
+2020-12-03 10:20:22 =ERROR REPORT====
+** Generic server 'CargueroTaskBunny.Worker.carguero_task_bunny.supervisor_test' terminating 
+** Last message in was {connected,#{'__struct__' => 'Elixir.AMQP.Connection',pid => <0.2957.0>}}
+** When Server state == #{'__struct__' => 'Elixir.CargueroTaskBunny.Worker',channel => nil,concurrency => 1,consumer_tag => nil,host => sv_test,job_stats => #{failed => 0,rejected => 0,succeeded => 0},queue => <<"carguero_task_bunny.supervisor_test">>,runners => 0,store_rejected_jobs => true}
+** Reason for termination ==
+** {{normal,{gen_server,call,[<0.2974.0>,{call,{'basic.qos',0,1,false},none,<0.2956.0>},60000]}},[{gen_server,call,3,[{file,"gen_server.erl"},{line,246}]},{'Elixir.AMQP.Basic',qos,2,[{file,"lib/amqp/basic.ex"},{line,112}]},{'Elixir.CargueroTaskBunny.Consumer',consume,3,[{file,"lib/carguero_task_bunny/consumer.ex"},{line,16}]},{'Elixir.CargueroTaskBunny.Worker',handle_info,2,[{file,"lib/carguero_task_bunny/worker.ex"},{line,144}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,680}]},{gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,756}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+2020-12-03 10:20:22 =CRASH REPORT====
+  crasher:
+    initial call: Elixir.CargueroTaskBunny.Worker:init/1
+    pid: <0.2956.0>
+    registered_name: 'CargueroTaskBunny.Worker.carguero_task_bunny.supervisor_test'
+    exception exit: {{normal,{gen_server,call,[<0.2974.0>,{call,{'basic.qos',0,1,false},none,<0.2956.0>},60000]}},[{gen_server,call,3,[{file,"gen_server.erl"},{line,246}]},{'Elixir.AMQP.Basic',qos,2,[{file,"lib/amqp/basic.ex"},{line,112}]},{'Elixir.CargueroTaskBunny.Consumer',consume,3,[{file,"lib/carguero_task_bunny/consumer.ex"},{line,16}]},{'Elixir.CargueroTaskBunny.Worker',handle_info,2,[{file,"lib/carguero_task_bunny/worker.ex"},{line,144}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,680}]},{gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,756}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+    ancestors: [wsv_supervisor_test,supevisor_test,<0.2906.0>]
+    message_queue_len: 0
+    messages: []
+    links: [<0.2955.0>]
+    dictionary: [{gen_server_call_timeout,60000}]
     trap_exit: true
     status: running
-    heap_size: 610
+    heap_size: 10958
     stack_size: 28
-    reductions: 206
+    reductions: 7945
   neighbours:
-2020-11-25 14:57:03 =SUPERVISOR REPORT====
-     Supervisor: {local,'Elixir.TaskBunny.Supervisor'}
-     Context:    start_error
-     Reason:     {'EXIT',{#{'__exception__' => true,'__struct__' => 'Elixir.ArgumentError',message => <<"expected :name option to be one of the following:\n\n  * nil\n  * atom\n  * {:global, term}\n  * {:via, module, term}\n\nGot: []\n">>},[{'Elixir.Supervisor',start_link,3,[{file,"lib/supervisor.ex"},{line,782}]},{supervisor,do_start_child_i,3,[{file,"supervisor.erl"},{line,385}]},{supervisor,do_start_child,2,[{file,"supervisor.erl"},{line,371}]},{supervisor,'-start_children/2-fun-0-',3,[{file,"supervisor.erl"},{line,355}]},{supervisor,children_map,4,[{file,"supervisor.erl"},{line,1171}]},{supervisor,init_children,2,[{file,"supervisor.erl"},{line,321}]},{gen_server,init_it,2,[{file,"gen_server.erl"},{line,417}]},{gen_server,init_it,6,[{file,"gen_server.erl"},{line,385}]}]}}
-     Offender:   [{pid,undefined},{id,'Elixir.TaskBunny.Supervisor'},{mfargs,{'Elixir.TaskBunny.Supervisor',start_link,[[]]}},{restart_type,permanent},{shutdown,infinity},{child_type,supervisor}]
+2020-12-03 10:20:22 =SUPERVISOR REPORT====
+     Supervisor: {local,wsv_supervisor_test}
+     Context:    child_terminated
+     Reason:     {normal,{gen_server,call,[<0.2974.0>,{call,{'basic.qos',0,1,false},none,<0.2956.0>},60000]}}
+     Offender:   [{pid,<0.2956.0>},{id,<<"carguero_task_bunny.worker.carguero_task_bunny.supervisor_test">>},{mfargs,{'Elixir.CargueroTaskBunny.Worker',start_link,[[{host,sv_test},{queue,<<"carguero_task_bunny.supervisor_test">>},{concurrency,1}]]}},{restart_type,permanent},{shutdown,5000},{child_type,worker}]
 
-2020-11-25 14:57:03 =CRASH REPORT====
+2020-12-03 10:20:22 =ERROR REPORT====
+** Generic server 'CargueroTaskBunny.Connection.sv_test' terminating 
+** Last message in was {'DOWN',#Ref<0.81723563.68157443.82297>,process,<0.2957.0>,{shutdown,normal}}
+** When Server state == {sv_test,nil,[]}
+** Reason for termination ==
+** {connection_lost,{shutdown,normal}}
+2020-12-03 10:20:22 =CRASH REPORT====
   crasher:
-    initial call: application_master:init/4
-    pid: <0.310.0>
-    registered_name: []
-    exception exit: {{{shutdown,{failed_to_start_child,'Elixir.TaskBunny.Supervisor',{'EXIT',{#{'__exception__' => true,'__struct__' => 'Elixir.ArgumentError',message => <<"expected :name option to be one of the following:\n\n  * nil\n  * atom\n  * {:global, term}\n  * {:via, module, term}\n\nGot: []\n">>},[{'Elixir.Supervisor',start_link,3,[{file,"lib/supervisor.ex"},{line,782}]},{supervisor,do_start_child_i,3,[{file,"supervisor.erl"},{line,385}]},{supervisor,do_start_child,2,[{file,"supervisor.erl"},{line,371}]},{supervisor,'-start_children/2-fun-0-',3,[{file,"supervisor.erl"},{line,355}]},{supervisor,children_map,4,[{file,"supervisor.erl"},{line,1171}]},{supervisor,init_children,2,[{file,"supervisor.erl"},{line,321}]},{gen_server,init_it,2,[{file,"gen_server.erl"},{line,417}]},{gen_server,init_it,6,[{file,"gen_server.erl"},{line,385}]}]}}}},{'Elixir.TaskBunny',start,[normal,[]]}},[{application_master,init,4,[{file,"application_master.erl"},{line,138}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
-    ancestors: [<0.309.0>]
+    initial call: Elixir.CargueroTaskBunny.Connection:init/1
+    pid: <0.2935.0>
+    registered_name: 'CargueroTaskBunny.Connection.sv_test'
+    exception exit: {{connection_lost,{shutdown,normal}},[{gen_server,handle_common_reply,8,[{file,"gen_server.erl"},{line,796}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+    ancestors: [supevisor_test,<0.2906.0>]
     message_queue_len: 1
-    messages: [{'EXIT',<0.311.0>,normal}]
-    links: [<0.309.0>,<0.44.0>]
-    dictionary: []
-    trap_exit: true
+    messages: [{'$gen_cast',{subscribe_connection,<0.2976.0>}}]
+    links: [<0.2934.0>]
+    dictionary: [{gen_server_call_timeout,60000}]
+    trap_exit: false
     status: running
-    heap_size: 987
+    heap_size: 2586
     stack_size: 28
-    reductions: 238
+    reductions: 35374
   neighbours:
+2020-12-03 10:20:22 =SUPERVISOR REPORT====
+     Supervisor: {local,supevisor_test}
+     Context:    child_terminated
+     Reason:     {connection_lost,{shutdown,normal}}
+     Offender:   [{pid,<0.2935.0>},{id,#Ref<0.81723563.68157450.79449>},{mfargs,{'Elixir.CargueroTaskBunny.Connection',start_link,[sv_test]}},{restart_type,permanent},{shutdown,5000},{child_type,worker}]
+
+2020-12-03 10:20:22 =SUPERVISOR REPORT====
+     Supervisor: {local,wsv_supervisor_test}
+     Context:    child_terminated
+     Reason:     killed
+     Offender:   [{pid,<0.3067.0>},{id,<<"carguero_task_bunny.worker.carguero_task_bunny.supervisor_test">>},{mfargs,{'Elixir.CargueroTaskBunny.Worker',start_link,[[{host,sv_test},{queue,<<"carguero_task_bunny.supervisor_test">>},{concurrency,1}]]}},{restart_type,permanent},{shutdown,5000},{child_type,worker}]
+

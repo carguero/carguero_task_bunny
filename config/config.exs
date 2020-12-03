@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :task_bunny, key: :value
+#     config :carguero_task_bunny, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:task_bunny, :key)
+#     Application.get_env(:carguero_task_bunny, :key)
 #
 # Or configure a 3rd-party app:
 #
@@ -28,7 +28,7 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 
-config :task_bunny,
+config :carguero_task_bunny,
   hosts: [
     default: [
       connect_options: []

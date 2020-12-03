@@ -1,4 +1,4 @@
-defmodule TaskBunny.JobTestHelper do
+defmodule CargueroTaskBunny.JobTestHelper do
   defmodule Tracer do
     def performed(_), do: nil
   end
@@ -8,7 +8,7 @@ defmodule TaskBunny.JobTestHelper do
   end
 
   defmodule TestJob do
-    use TaskBunny.Job
+    use CargueroTaskBunny.Job
 
     def perform(payload) do
       Tracer.performed(payload)
@@ -80,7 +80,7 @@ defmodule TaskBunny.JobTestHelper do
     Enum.find_value(
       1..100,
       fn _ ->
-        case TaskBunny.Connection.subscribe_connection(host, self()) do
+        case CargueroTaskBunny.Connection.subscribe_connection(host, self()) do
           :ok ->
             true
 

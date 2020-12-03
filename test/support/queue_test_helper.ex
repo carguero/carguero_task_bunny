@@ -1,4 +1,4 @@
-defmodule TaskBunny.QueueTestHelper do
+defmodule CargueroTaskBunny.QueueTestHelper do
   defmacro clean(queues) do
     quote do
       # Remove pre-existing queues before every test.
@@ -17,7 +17,7 @@ defmodule TaskBunny.QueueTestHelper do
 
   # Queue Helpers
   def open_channel(host \\ :default) do
-    conn = TaskBunny.Connection.get_connection!(host)
+    conn = CargueroTaskBunny.Connection.get_connection!(host)
     {:ok, _channel} = AMQP.Channel.open(conn)
   end
 

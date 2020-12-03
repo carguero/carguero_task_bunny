@@ -1,0 +1,280 @@
+defmodule CargueroTaskBunny.WorkerTest do
+  use ExUnit.Case, async: false
+  import CargueroTaskBunny.QueueTestHelper
+  alias CargueroTaskBunny.{Connection, Worker, Queue, JobTestHelper}
+  alias JobTestHelper.TestJob
+
+  @queue "carguero_task_bunny.worker_test"
+
+  defp all_queues do
+    Queue.queue_with_subqueues(@queue)
+  end
+
+  defp start_worker() do
+    start_worker(%{concurrency: 1, store_rejected_jobs: true})
+  end
+
+  defp start_worker(%{concurrency: concurrency, store_rejected_jobs: store_rejected_jobs}) do
+    {:ok, worker} = Worker.start_link(queue: @queue, concurrency: concurrency, store_rejected_jobs: store_rejected_jobs)
+    worker
+  end
+
+  defp start_worker(%{concurrency: concurrency}) do
+    start_worker(%{concurrency: concurrency, store_rejected_jobs: true})
+  end
+
+  defp start_worker(%{store_rejected_jobs: store_rejected_jobs}) do
+    start_worker(%{concurrency: 1, store_rejected_jobs: store_rejected_jobs})
+  end
+
+
+  setup do
+    clean(all_queues())
+    JobTestHelper.setup()
+    Queue.declare_with_subqueues(:default, @queue)
+
+    on_exit(fn ->
+      JobTestHelper.teardown()
+    end)
+
+    :ok
+  end
+
+  describe "worker" do
+    test "invokes a job with the payload" do
+      worker = start_worker()
+      payload = %{"hello" => "world1"}
+
+      TestJob.enqueue(payload, queue: @queue)
+      JobTestHelper.wait_for_perform()
+
+      assert List.first(JobTestHelper.performed_payloads()) == payload
+
+      GenServer.stop(worker)
+    end
+
+    test "consumes the message" do
+      worker = start_worker()
+      [main, retry, rejected, _scheduled] = all_queues()
+      payload = %{"hello" => "world1"}
+
+      TestJob.enqueue(payload, queue: @queue)
+      JobTestHelper.wait_for_perform()
+
+      conn = Connection.get_connection!()
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: retry_count} = Queue.state(conn, retry)
+      %{message_count: rejected_count} = Queue.state(conn, rejected)
+
+      assert main_count == 0
+      assert retry_count == 0
+      assert rejected_count == 0
+
+      GenServer.stop(worker)
+    end
+
+    test "concurrency" do
+      worker = start_worker(%{concurrency: 5})
+      payload = %{"sleep" => 10_000}
+
+      # Run 10 jobs and each would take 10 seconds to finish
+      Enum.each(1..10, fn _ ->
+        TestJob.enqueue(payload, queue: @queue)
+      end)
+
+      # This waits for up to 1 second
+      assert JobTestHelper.wait_for_perform(5)
+
+      # Make sure more than specified number of jobs were not invoked
+      assert JobTestHelper.performed_count() == 5
+
+      GenServer.stop(worker)
+    end
+
+    test "executes the on_reject callback when rejected" do
+      reset_test_job_retry_interval(5)
+
+      worker = start_worker()
+      payload = %{"fail" => true, "ppid" => self() |> :erlang.term_to_binary() |> Base.encode64()}
+
+      TestJob.enqueue(payload, queue: @queue)
+      # 1 normal + 10 retries = 11
+      JobTestHelper.wait_for_perform(11)
+
+      assert_received :on_reject_callback_called
+
+      GenServer.stop(worker)
+    end
+
+    test "executes the on_reject callback only when rejected" do
+      reset_test_job_retry_interval(5)
+
+      worker = start_worker()
+      payload = %{"fail" => true, "ppid" => self() |> :erlang.term_to_binary() |> Base.encode64()}
+
+      TestJob.enqueue(payload, queue: @queue)
+      JobTestHelper.wait_for_perform()
+
+      refute_received :on_reject_callback_called
+
+      GenServer.stop(worker)
+    end
+  end
+
+  describe "retry" do
+    test "sends failed job to retry queue" do
+      worker = start_worker()
+      [main, retry, rejected, _scheduled] = all_queues()
+      payload = %{"fail" => true}
+
+      TestJob.enqueue(payload, queue: @queue)
+      JobTestHelper.wait_for_perform()
+
+      conn = Connection.get_connection!()
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: retry_count} = Queue.state(conn, retry)
+      %{message_count: rejected_count} = Queue.state(conn, rejected)
+
+      assert main_count == 0
+      assert retry_count == 1
+      assert rejected_count == 0
+
+      GenServer.stop(worker)
+    end
+
+    def reset_test_job_retry_interval(interval) do
+      :meck.new(JobTestHelper.RetryInterval, [:passthrough])
+      :meck.expect(JobTestHelper.RetryInterval, :interval, fn -> interval end)
+    end
+
+    def retry_max_times do
+      # Sets up TestJob to retry shortly
+      reset_test_job_retry_interval(5)
+
+      payload = %{"fail" => true}
+
+      TestJob.enqueue(payload, queue: @queue)
+      JobTestHelper.wait_for_perform(11)
+
+      # 1 normal + 10 retries = 11
+      assert JobTestHelper.performed_count() == 11
+    end
+
+    test "retries max_retry times then sends to rejected queue" do
+      worker = start_worker()
+      [main, retry, rejected, _scheduled] = all_queues()
+
+      retry_max_times()
+
+      conn = Connection.get_connection!()
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: retry_count} = Queue.state(conn, retry)
+      %{message_count: rejected_count} = Queue.state(conn, rejected)
+
+      assert main_count == 0
+      assert retry_count == 0
+      assert rejected_count == 1
+
+      GenServer.stop(worker)
+    end
+
+    test "does not send to rejected queue if store_rejected_jobs is false" do
+      worker = start_worker(%{store_rejected_jobs: false})
+      [main, retry, rejected, _scheduled] = all_queues()
+
+      retry_max_times()
+
+      conn = Connection.get_connection!()
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: retry_count} = Queue.state(conn, retry)
+      %{message_count: rejected_count} = Queue.state(conn, rejected)
+
+      assert main_count == 0
+      assert retry_count == 0
+      assert rejected_count == 0
+
+      GenServer.stop(worker)
+    end
+
+    test "sends to rejected queue if return_value is :reject" do
+      worker = start_worker()
+      [main, retry, rejected, _scheduled] = all_queues()
+      payload = %{"reject" => true}
+
+      TestJob.enqueue(payload, queue: @queue)
+      JobTestHelper.wait_for_perform()
+
+      conn = Connection.get_connection!()
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: retry_count} = Queue.state(conn, retry)
+      %{message_count: rejected_count} = Queue.state(conn, rejected)
+
+      assert main_count == 0
+      assert retry_count == 0
+      assert rejected_count == 1
+
+      GenServer.stop(worker)
+    end
+  end
+
+  describe "delay" do
+    test "invokes the job with the delay" do
+      worker = start_worker()
+      [main, _, _, scheduled] = all_queues()
+      payload = %{"hello" => "world"}
+
+      # Runs job in 500 ms
+      TestJob.enqueue(payload, queue: @queue, delay: 500)
+      :timer.sleep(100)
+
+      assert JobTestHelper.performed_count() == 0
+
+      conn = Connection.get_connection!()
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: scheduled_count} = Queue.state(conn, scheduled)
+
+      assert main_count == 0
+      assert scheduled_count == 1
+
+      JobTestHelper.wait_for_perform(1)
+
+      assert JobTestHelper.performed_count() == 1
+
+      %{message_count: main_count} = Queue.state(conn, main)
+      %{message_count: scheduled_count} = Queue.state(conn, scheduled)
+
+      assert main_count == 0
+      assert scheduled_count == 0
+
+      GenServer.stop(worker)
+    end
+  end
+
+  test "invalid payload" do
+    :meck.expect(CargueroTaskBunny.Consumer, :ack, fn _, _, _ -> nil end)
+
+    assert Worker.handle_info({:basic_deliver, "}", %{}}, %{
+             host: :default,
+             queue: @queue,
+             concurrency: 1,
+             store_rejected_jobs: true,
+             channel: nil,
+             runners: 0,
+             job_stats: %{
+               failed: 0,
+               succeeded: 0,
+               rejected: 0
+             }
+           }) ==
+             {:noreply,
+              %{
+                host: :default,
+                queue: @queue,
+                concurrency: 1,
+                store_rejected_jobs: true,
+                channel: nil,
+                runners: 0,
+                job_stats: %{failed: 0, rejected: 1, succeeded: 0}
+              }}
+  end
+end
