@@ -6,7 +6,7 @@ defmodule TaskBunny.Mixfile do
 
   def project do
     [
-      app: :carguero_task_bunny,
+      app: :task_bunny,
       version: @version,
       elixir: "~> 1.7.4",
       elixirc_paths: elixirc_paths(Mix.env()),
