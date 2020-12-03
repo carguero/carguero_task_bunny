@@ -76,7 +76,7 @@ defmodule CargueroTaskBunny.Mixfile do
 
   defp deps do
     [
-      {:amqp, "~> 0.3.1"},
+      {:amqp, "~> 1.1.1"},
       {:jason, "~> 1.2"},
 
       # dev/test
