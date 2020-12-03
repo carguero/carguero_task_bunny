@@ -66,7 +66,7 @@ defmodule CargueroTaskBunny.Mixfile do
 
   def application do
     [
-      extra_applications: [:lager, :logger, :amqp],
+      extra_applications: [:logger, :amqp],
       mod: {CargueroTaskBunny, []}
     ]
   end
@@ -76,7 +76,7 @@ defmodule CargueroTaskBunny.Mixfile do
 
   defp deps do
     [
-      {:amqp, "~> 1.6"},
+      {:amqp, "~> 0.3.1"},
       {:jason, "~> 1.2"},
 
       # dev/test
