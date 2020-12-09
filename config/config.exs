@@ -35,4 +35,10 @@ config :carguero_task_bunny,
     ]
   ]
 
+# Stop lager redirecting :error_logger messages
+config :lager, :error_logger_redirect, false
+
+# Stop lager removing Logger's :error_logger handler
+config :lager, :error_logger_whitelist, [Logger.ErrorHandler]
+
 import_config "#{Mix.env()}.exs"
