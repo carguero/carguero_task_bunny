@@ -1,7 +1,7 @@
 defmodule CargueroTaskBunny.Mixfile do
   use Mix.Project
 
-  @version "0.0.4"
+  @version "0.0.5"
   @description "Background processing application/library written in Elixir that uses RabbitMQ as a messaging backend"
 
   def project do
@@ -76,7 +76,7 @@ defmodule CargueroTaskBunny.Mixfile do
 
   defp deps do
     [
-      {:amqp, "~> 1.1.1"},
+      {:amqp, "~> 1.6.0"},
       {:jason, "~> 1.2"},
 
       # dev/test
