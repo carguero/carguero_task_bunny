@@ -82,7 +82,7 @@ defmodule CargueroTaskBunny.JobError do
       payload: payload,
       error_type: :exception,
       exception: exception,
-      stacktrace: Process.info(self(), :current_stacktrace)
+      stacktrace: __STACKTRACE__
     }
   end
 
@@ -94,7 +94,7 @@ defmodule CargueroTaskBunny.JobError do
       payload: payload,
       error_type: :exit,
       reason: reason,
-      stacktrace: Process.info(self(), :current_stacktrace)
+      stacktrace: __STACKTRACE__
     }
   end
 
