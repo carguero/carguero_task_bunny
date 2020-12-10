@@ -35,6 +35,17 @@ config :carguero_task_bunny,
     ]
   ]
 
+# Stop lager writing a crash log
+config :lager, :crash_log, false
+
+config :lager,
+  log_root: 'log/',
+  handlers: [
+    lager_console_backend: :error,
+    lager_file_backend: [file: "error.log", level: :error],
+    lager_file_backend: [file: "console.log", level: :error]
+  ]
+
 # Stop lager redirecting :error_logger messages
 config :lager, :error_logger_redirect, false
 
