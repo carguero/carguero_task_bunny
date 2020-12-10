@@ -1,7 +1,7 @@
 defmodule CargueroTaskBunny.Mixfile do
   use Mix.Project
 
-  @version "0.0.5"
+  @version "0.0.6"
   @description "Background processing application/library written in Elixir that uses RabbitMQ as a messaging backend"
 
   def project do
