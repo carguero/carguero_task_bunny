@@ -1,4 +1,5 @@
 defmodule CargueroTaskBunny.Job do
+  @derive Jason.Encoder
   @moduledoc """
   Behaviour module for implementing a CargueroTaskBunny job.
 
